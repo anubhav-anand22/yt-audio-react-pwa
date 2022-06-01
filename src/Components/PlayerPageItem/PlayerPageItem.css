@@ -1,0 +1,82 @@
+.playerPageItem {
+    overflow: hidden;
+    width: calc(100% - 20px);
+    margin: 10px;
+    background-color: var(--color-two);
+    border-radius: 15px;
+}
+
+.player-page-item-img-cont {
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-five);
+    cursor: pointer;
+}
+
+.player-page-item-img {
+    width: 100%;
+}
+
+.player-page-item-author-more-icon-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 10px 3px 10px;
+}
+
+.player-page-item-a-author {
+    color: var(--color-four);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.player-page-item-more-icon {
+    width: 23px;
+    height: 23px;
+}
+
+.player-page-item-title {
+    font-size: 14px;
+    padding: 3px 10px;
+}
+
+.player-page-item-more-icon-btn {
+    background: none;
+    border: none;
+    outline: none;
+    position: relative
+}
+
+.player-page-item-more-cont {
+    width: 150px;
+    min-height: 100px;
+    top: -100px;
+    right: 10px;
+    background-color: var(--color-one);
+    position: absolute;
+    display: none;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.player-page-item-more-cont span {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    text-align: start;
+    color: var(--color-three);
+    transition: background 0.3s ease-in-out;
+}
+
+.player-page-item-more-cont span:hover {
+    background: var(--color-one-dark);
+}
+
+.player-page-item-more-cont-show {
+    display: block;
+}

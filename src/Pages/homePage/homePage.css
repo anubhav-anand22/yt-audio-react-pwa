@@ -1,0 +1,34 @@
+.homepage-search-form {
+    width: 90vw;
+    max-width: 700px;
+    border: 2px solid var(--color-two);
+    display: flex;
+    background-color: var(--color-two);
+    border-radius: 15px;
+    overflow: hidden;
+    margin: 20px auto;
+}
+
+.homepage-search-input {
+    border: none;
+    background-color: var(--color-three);
+    color: var(--color-four);
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    outline: none;
+}
+
+.homepage-search-btn {
+    width: 60px;
+    height: 41px;
+    border: none;
+    background-color: var(--color-two);
+    outline: none;
+}
+
+.homepage-search-icon {
+    width: 41px;
+    height: 41px;
+    color: var(--color-three);
+}
