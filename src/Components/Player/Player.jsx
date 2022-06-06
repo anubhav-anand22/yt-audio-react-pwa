@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './Player.css';
 import {
     MdChevronLeft,
@@ -16,24 +16,44 @@ import {
 } from 'react-icons/ai';
 import { formatTime } from '../../Helpers/formatTime';
 import { baseURL } from '../../CONST';
-import { next, previous } from './PlayerFn';
+import {
+    next,
+    previous,
+    setIsLikedHandler,
+    setPlayBackRateHandler,
+    setVolumeHandler,
+} from './PlayerFn';
+import Context from '../../Helpers/Context';
 
 const audio = new Audio();
 
 const Player = ({ info, que, setCurrentVideoInfo, setQue }) => {
-    const [isPlayerMinimized, setIsPlayerMinimized] = useState(false);
+    const { setAlertInfo, userInfo, setUserInfo, setLoaderInfo } =
+        useContext(Context);
+
+    const [isPlayerMinimized, setIsPlayerMinimized] = useState(true);
     const [isLiked, setIsLiked] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [volume, setVolume] = useState(100);
+    const [playBackRate, setPlayBackRate] = useState(100);
+
+    useEffect(() => {
+        if (!info?.id) return;
+        if (userInfo?.liked?.video?.includes(info?.id)) {
+            setIsLiked(true);
+        } else {
+            setIsLiked(false);
+        }
+    }, [userInfo, info]);
 
     useEffect(() => {
         if (!info?.id) return;
         audio.src = `${baseURL}/api/audio/${info.id}`;
         audio.onloadeddata = () => {
             setDuration(audio.duration);
-            // audio.play();
+            audio.play();
         };
     }, [info]);
 
@@ -41,21 +61,22 @@ const Player = ({ info, que, setCurrentVideoInfo, setQue }) => {
         audio.ontimeupdate = () => setCurrentTime(audio.currentTime);
         audio.onplay = () => setIsPlaying(true);
         audio.onpause = () => setIsPlaying(false);
-        
     }, []);
 
     useEffect(() => {
         audio.onended = () => {
             setIsPlaying(false);
-            next(que, setCurrentVideoInfo, setQue, info)
-        }
-    }, [info, setQue, setCurrentVideoInfo, que])
+            next(que, setCurrentVideoInfo, setQue, info);
+        };
+    }, [info, setQue, setCurrentVideoInfo, que]);
 
     useEffect(() => {
         audio.volume = volume / 100;
     }, [volume]);
 
-    
+    useEffect(() => {
+        audio.playbackRate = playBackRate / 100;
+    }, [playBackRate]);
 
     return (
         <div
@@ -85,6 +106,11 @@ const Player = ({ info, que, setCurrentVideoInfo, setQue }) => {
                         >
                             {info.authorName}
                         </a>
+                        <br />
+                        <a href={`${baseURL}/api/audio/${info?.id}`} download={info?.title} title={info?.title} target="_blank"><button className='player-back-info-conft-download-btn'>Download</button></a>
+                        <p className="player-back-description">
+                            {info.description}
+                        </p>
                     </div>
                 </div>
             )}
@@ -99,8 +125,28 @@ const Player = ({ info, que, setCurrentVideoInfo, setQue }) => {
                         />
                     </div>
                     <div className="player-front-section-one">
-                        <MdVolumeDown className="player-front-icons" />
-                        <AiFillFastBackward className="player-front-icons" />
+                        <MdVolumeDown
+                            className="player-front-icons"
+                            onClick={() =>
+                                setVolumeHandler(
+                                    setAlertInfo,
+                                    -10,
+                                    volume,
+                                    setVolume
+                                )
+                            }
+                        />
+                        <AiFillFastBackward
+                            className="player-front-icons"
+                            onClick={() =>
+                                setPlayBackRateHandler(
+                                    setAlertInfo,
+                                    -25,
+                                    playBackRate,
+                                    setPlayBackRate
+                                )
+                            }
+                        />
                         <MdChevronLeft
                             className="player-front-icons"
                             onClick={() =>
@@ -124,8 +170,28 @@ const Player = ({ info, que, setCurrentVideoInfo, setQue }) => {
                                 next(que, setCurrentVideoInfo, setQue, info)
                             }
                         />
-                        <AiFillFastForward className="player-front-icons" />
-                        <MdVolumeUp className="player-front-icons" />
+                        <AiFillFastForward
+                            className="player-front-icons"
+                            onClick={() =>
+                                setPlayBackRateHandler(
+                                    setAlertInfo,
+                                    25,
+                                    playBackRate,
+                                    setPlayBackRate
+                                )
+                            }
+                        />
+                        <MdVolumeUp
+                            className="player-front-icons"
+                            onClick={() =>
+                                setVolumeHandler(
+                                    setAlertInfo,
+                                    10,
+                                    volume,
+                                    setVolume
+                                )
+                            }
+                        />
                     </div>
                     <p className="player-front-title">{info?.title}</p>
                     <div className="player-front-section-two">
@@ -145,14 +211,35 @@ const Player = ({ info, que, setCurrentVideoInfo, setQue }) => {
                         <p className="player-front-duration">
                             {formatTime(duration)}
                         </p>
-                        {isLiked ? (
+                        {isLiked && userInfo?.token && (
                             <AiFillHeart
-                                onClick={() => setIsLiked(false)}
+                                onClick={() =>
+                                    setIsLikedHandler(
+                                        false,
+                                        info.id,
+                                        userInfo,
+                                        setUserInfo,
+                                        setAlertInfo,
+                                        setIsLiked,
+                                        setLoaderInfo
+                                    )
+                                }
                                 className="player-front-icons"
                             />
-                        ) : (
+                        )}
+                        {!isLiked && userInfo?.token && (
                             <AiOutlineHeart
-                                onClick={() => setIsLiked(true)}
+                                onClick={() =>
+                                    setIsLikedHandler(
+                                        true,
+                                        info.id,
+                                        userInfo,
+                                        setUserInfo,
+                                        setAlertInfo,
+                                        setIsLiked,
+                                        setLoaderInfo
+                                    )
+                                }
                                 className="player-front-icons"
                             />
                         )}

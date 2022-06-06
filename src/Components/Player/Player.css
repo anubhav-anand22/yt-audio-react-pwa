@@ -89,6 +89,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow-y: scroll;
+    padding-bottom: 300px;
 }
 
 .player-max .player-back {
@@ -96,19 +98,22 @@
 }
 
 .player-back-img-cont {
-    width: 90%;
-    overflow: hidden;
+    width: 90vw;
+    height: 50.625vw;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: var(--color-five);
-    aspect-ratio: 16/9;
     border-radius: 10px;
     margin-top: 15px;
 }
 
 .player-back-img {
-    width: 100%;
+    width: auto;
+    height: auto;
+    max-width: 90vw;
+    max-height: 50.625vw;
+    border-radius: 10px;
 }
 
 .player-back-info-cont {
@@ -126,4 +131,27 @@
     color: var(--color-four);
 }
 
-/* Player Back end */
+.player-back-description {
+    white-space: pre-line;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.player-back-info-conft-download-btn {
+    width: 90%;
+    border: none;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 10px;
+    color: var(--color-three);
+    background-color: var(--color-one);
+    margin-top: 10px;
+}
+
+@media (min-width: 600px) {
+    .player-back-info-conft-download-btn {
+        width: 150px;
+    }
+}

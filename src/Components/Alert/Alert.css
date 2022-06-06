@@ -1,0 +1,54 @@
+.alert {
+    position: fixed;
+    top: -150px;
+    left: 5%;
+    width: 90%;
+    background-color: var(--color-four);
+    padding: 8px;
+    border-radius: 7px;
+    color: var(--color-three);
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: transform 0.3s ease-in-out;
+}
+
+.alert-show {
+    transform: translateY(170px);
+}
+
+.alert-section-one {
+    display: flex;
+    align-items: center;
+}
+
+.alert-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+@media (min-width: 600px) {
+    .alert {
+        width: 600px;
+        left: calc(50% - 300px);
+    }
+}
+
+.alert-warning {
+    animation-name: warning;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes warning {
+    from {
+        background-color: #ff0000;
+    }
+    to {
+        background-color: #ff3737;
+    }
+}

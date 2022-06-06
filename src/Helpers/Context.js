@@ -4,13 +4,26 @@ const Context = createContext();
 
 export const Provider = ({children}) => {
     const [isDrawrOpen, setIsDrawrOpen] = useState(false);
-    const [userInfo, setUserInfo] = useState({token: ""})
+    const [userInfo, setUserInfo] = useState({token: ""});
+    const [alertInfo, setAlert] = useState({});
+    const [loaderInfo, setLoaderInfo] = useState({show: false, message: ''});
+
+    const setAlertInfo = (obj) => {
+        setAlert({
+            ...obj,
+            id: Math.random().toString()
+        })
+    }
 
     const value = {
         isDrawrOpen,
         userInfo,
+        alertInfo,
         setIsDrawrOpen,
-        setUserInfo
+        setUserInfo,
+        setAlertInfo,
+        loaderInfo,
+        setLoaderInfo,
     }
 
     return (

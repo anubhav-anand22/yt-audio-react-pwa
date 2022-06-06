@@ -1,0 +1,71 @@
+.confirm-outer {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-back-transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0);
+    transition: transform 0.6s ease-in-out;
+}
+
+.confirm-show {
+    transform: scale(1);
+}
+
+.confirm-inner {
+    min-height: 100px;
+    min-width: 100px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: var(--color-three);
+}
+
+.confirm-inner p {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.confirm-inner-btn-cont {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.confirm-inner-btn-cont > button {
+    padding: 7px;
+    border: none;
+    margin-top: 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.confirm-inner-btn-normal {
+    background-color: var(--color-two);
+    color: var(--color-three);
+}
+.confirm-inner-btn-danger {
+    background-color: var(--color-red);
+    color: var(--color-three);
+}
+.confirm-inner-btn-good {
+    background-color: var(--color-green);
+    color: var(--color-three);
+}
+
+@media (min-width: 600px) {
+    .confirm-inner-btn-cont {
+        flex-direction: row;
+        gap: 10px;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .confirm-inner-btn-cont > button {
+        min-width: 100px;
+    };
+}

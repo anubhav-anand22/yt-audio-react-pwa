@@ -4,7 +4,7 @@ export const loadPlaylist = async (
     id,
     setQue,
     setCurrentVideoInfo,
-    setListItems
+    setListItems,
 ) => {
     try {
         const list = await fetch(`${baseURL}/api/video-from-list/${id}`)
@@ -28,7 +28,7 @@ export const loadVideoInfo = async (
     id,
     setCurrentVideoInfo,
     shouldSetQue = false,
-    setQue
+    setQue,
 ) => {
     try {
         const res = await fetch(`${baseURL}/api/video-info/${id}`)
@@ -40,6 +40,7 @@ export const loadVideoInfo = async (
                 console.log(e);
             });
 
+
         const m = {
             related_videos: res.related_videos,
             videoDetails: {
@@ -47,12 +48,12 @@ export const loadVideoInfo = async (
                 authorId: res.videoDetails.channelId,
                 authorName: res.videoDetails.ownerChannelName,
                 title: res.videoDetails.title,
-                thumbnails: res.videoDetails.thumbnails
+                thumbnails: res.videoDetails.thumbnails,
+                description: res.videoDetails.description
             }
         }
 
         setCurrentVideoInfo(m);
-        console.log(res);
 
         if (shouldSetQue) {
             setQue(res.related_videos);
@@ -74,5 +75,62 @@ export const onChangeSelect = ({
         setQue(currentVideoInfo.related_videos);
     } else if (value === 'list') {
         setQue(listItems);
+    }
+};
+
+export const setisLikedPlaylistHanlder = async (
+    e,
+    id,
+    userInfo,
+    setUserInfo,
+    setAlertInfo,
+    setIsLikedPlaylist,
+    setLoaderInfo
+) => {
+    try {
+        if (!userInfo?.token || id.length !== 34) return;
+        setIsLikedPlaylist(e);
+
+        let liked = userInfo.liked;
+
+        if (liked.playlist.includes(id)) {
+            liked.playlist = liked.playlist.filter((e) => e !== id);
+        } else {
+            liked.playlist = [id, ...liked.playlist];
+        }
+
+        setLoaderInfo({show: true})
+        const url = `${baseURL}/api/user/update-user`;
+
+        const res = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+            body: JSON.stringify({ liked }),
+        })
+            .then((e) =>
+                e.ok ? e.json() : { error: 'Something went wrong!' }
+            )
+            .catch((e) => {
+                throw new Error(e);
+            });
+
+            setLoaderInfo({show: false})
+
+        if (res.error) {
+            setAlertInfo({ message: res.error, type: 'warning' });
+            setIsLikedPlaylist(!e);
+            return;
+        }
+
+        setUserInfo(res);
+        localStorage.setItem('USER_INFO', JSON.stringify(res));
+    } catch (e) {
+        setIsLikedPlaylist(!e);
+        setAlertInfo({ message: 'Something went wrong!', type: 'warning' });
+        console.log(e);
+        setLoaderInfo({show: false})
     }
 };
