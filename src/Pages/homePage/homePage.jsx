@@ -59,7 +59,7 @@ const HomePage = () => {
                             {userInfo?.liked?.video.length !== 0 ? (
                                 <div className="home-page-video-liked-item-cont" ref={videoItemCont}>
                                     {userInfo?.liked?.video?.map((e) => (
-                                        <Item key={e} redirect={`/v/${id}`} id={e} url={`https://i.ytimg.com/vi/${e}/hqdefault.jpg`} />
+                                        <Item key={e} redirect={`/v/${e}`} id={e} url={`https://i.ytimg.com/vi/${e}/hqdefault.jpg`} />
                                     ))}
                                 </div>
                             ) : (
@@ -81,7 +81,7 @@ const HomePage = () => {
                             {userInfo?.liked?.playlist.length !== 0 ? (
                                 <div className="home-page-video-liked-item-cont" ref={playlistItemCont}>
                                     {userInfo?.liked?.playlist?.map((e) => (
-                                        <Item key={e} redirect={`/list/${id}`} id={e} url={`${baseURL}/api/get-img-link-from-playlist-id/${e}`} />
+                                        <Item key={e} redirect={`/list/${e}`} id={e} url={`${baseURL}/api/get-img-link-from-playlist-id/${e}`} />
                                     ))}
                                 </div>
                             ) : (
