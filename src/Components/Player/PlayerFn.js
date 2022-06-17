@@ -122,9 +122,7 @@ export const setIsLikedHandler = async (
         setUserInfo(res);
         localStorage.setItem('USER_INFO', JSON.stringify(res));
     } catch (e) {
-        setIsLiked(!e);
         setAlertInfo({ message: 'Something went wrong!', type: 'warning' });
-        console.log(e);
         setLoaderInfo({show: false})
     }
 };

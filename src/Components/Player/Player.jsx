@@ -25,7 +25,7 @@ import {
 } from './PlayerFn';
 import Context from '../../Helpers/Context';
 
-const audio = new Audio();
+const audio = document.getElementById('AUDIO')
 
 const Player = ({ info, que, setCurrentVideoInfo, setQue }) => {
     const { setAlertInfo, userInfo, setUserInfo, setLoaderInfo } =
@@ -40,6 +40,29 @@ const Player = ({ info, que, setCurrentVideoInfo, setQue }) => {
     const [playBackRate, setPlayBackRate] = useState(100);
 
     useEffect(() => {
+        if(!info?.thumbnails || info.thumbnails === 0) return;
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: info?.title || "TITLE",
+            artist: info?.authorName || "ARTIST",
+            artwork: info?.thumbnails?.map(e => ({...e, src: e.url}))
+        });
+        window.navigator.mediaSession.setActionHandler('play', () => audio.play())
+        window.navigator.mediaSession.setActionHandler('pause', () => audio.pause())
+        window.navigator.mediaSession.setActionHandler('previoustrack', () => previous(que, setCurrentVideoInfo, setQue, info))
+        window.navigator.mediaSession.setActionHandler('nexttrack', () => next(que, setCurrentVideoInfo, setQue, info))
+        window.navigator.mediaSession.setActionHandler('seekbackward', () => {
+            let e = audio.currentTime - 10
+            if(e < 0) e = 0;
+            audio.currentTime = e
+        })
+        window.navigator.mediaSession.setActionHandler('seekforward', () => {
+            let e = audio.currentTime + 10
+            if(e > audio.duration) e = audio.duration;
+            audio.currentTime = e
+        })
+    }, [info, que, setCurrentVideoInfo, setQue]);
+
+    useEffect(() => {
         if (!info?.id) return;
         if (userInfo?.liked?.video?.includes(info?.id)) {
             setIsLiked(true);
@@ -51,9 +74,10 @@ const Player = ({ info, que, setCurrentVideoInfo, setQue }) => {
     useEffect(() => {
         if (!info?.id) return;
         audio.src = `${baseURL}/api/audio/${info.id}`;
+        audio.autoplay = true;
         audio.onloadeddata = () => {
-            setDuration(audio.duration);
             audio.play();
+            setDuration(audio.duration);
         };
     }, [info]);
 

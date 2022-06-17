@@ -43,13 +43,16 @@ const PlayerPage = ({ type }) => {
                 setCurrentVideoInfo,
                 setListItems,
             ).finally(e => setLoaderInfo({show: false}));
-            if (userInfo?.liked?.playlist?.includes(id)) {
-                setIsLikedPlaylist(true);
-            } else {
-                setIsLikedPlaylist(false);
-            }
         }
     }, []);
+
+    React.useEffect(() => {
+        if (userInfo?.liked?.playlist?.includes(params.id)) {
+            setIsLikedPlaylist(true);
+        } else {
+            setIsLikedPlaylist(false);
+        }
+    }, [userInfo])
 
     return (
         <div className="player-page">

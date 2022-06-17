@@ -56,7 +56,6 @@ export const onSubmitHandler = async (
 
         navigate(getBackPath(params.r));
     } catch (e) {
-        console.log(e);
         setAlertInfo({ message: "Something went wrong!", type: 'warning' });
         setLoaderInfo({show: false})
     }

@@ -16,7 +16,7 @@ export const loadPlaylist = async (
                 console.log(e);
             });
 
-        loadVideoInfo(list.items[0].id, setCurrentVideoInfo, setQue);
+        loadVideoInfo(list.items[0].id, setCurrentVideoInfo, false, setQue);
         setQue(list.items);
         setListItems(list.items);
     } catch (e) {
